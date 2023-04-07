@@ -9,10 +9,11 @@ class AnimeListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnimeListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAnimeListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.textAnimeList.text = "Lista de Animes"
-        binding.buttonClose.text = "Cerrar"
+        binding = ActivityAnimeListBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+            textAnimeList.text = "Lista de Animes"
+            buttonClose.text = "Cerrar"
+        }
     }
     fun close(view: View){
         finish()

@@ -10,10 +10,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        binding.textMainMenu.text = "Menú Principal"
-        binding.buttonAnimeList.text = "Lista de Animes"
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+            textMainMenu.text = "Menú Principal"
+            buttonAnimeList.text = "Lista de Animes"
+        }
     }
     fun changeAnimeList(view: View){
         val intent = Intent(this, AnimeListActivity::class.java)
