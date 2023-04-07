@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface AnimeDBService{
     @GET("animes")
-    fun animeList(): Call<AnimeDB>
+    fun animeList(): Call<AnimeList>
 }

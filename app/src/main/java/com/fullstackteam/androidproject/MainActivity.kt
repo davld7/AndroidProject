@@ -3,7 +3,6 @@ package com.fullstackteam.androidproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.fullstackteam.androidproject.databinding.ActivityMainBinding
 import com.fullstackteam.androidproject.model.AnimeDBClient
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
             val animeList = AnimeDBClient.service.animeList()
             val body = animeList.execute().body()
             if (body != null)
-                Log.d("MainActivity", "Anime count: ${body.size}")
+                println("Anime count: ${body.size}")
         }
     }
     fun changeAnimeList(view: View){

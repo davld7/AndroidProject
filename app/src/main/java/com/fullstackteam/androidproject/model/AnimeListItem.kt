@@ -1,6 +1,6 @@
 package com.fullstackteam.androidproject.model
 
-data class AnimeDBItem(
+data class AnimeListItem(
     val description: String,
     val episodes: Int,
     val genres: String,

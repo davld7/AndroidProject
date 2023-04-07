@@ -1,3 +1,3 @@
 package com.fullstackteam.androidproject.model
 
-class AnimeDB : ArrayList<AnimeDBItem>()
+class AnimeList : ArrayList<AnimeListItem>()
