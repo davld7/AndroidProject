@@ -17,12 +17,27 @@ class MainActivity : AppCompatActivity() {
             textMainMenu.text = "Menú Principal"
             buttonAnimeList.text = "Lista de Animes"
         }
-        // Mediante una solicitud GET hecha a la API, imprimir la cantidad de animes que hay en la base de datos.
+
+        // Hilo de prueba
         thread{
+            // Solicitud GET hecha a la API
             val animeList = AnimeDBClient.service.animeList()
-            val body = animeList.execute().body()
-            if (body != null)
-                println("Anime count: ${body.size}")
+            val response = animeList.execute()
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                // Imprimir la cantidad de animes que hay en la base de datos.
+                println("Cantidad: ${body.size}")
+                // Imprimir animes.
+                for (anime in body){
+                    println("ID: ${anime.id}")
+                    println("Nombre: ${anime.name}")
+                    println("Descripción: ${anime.description}")
+                    println("Episodios: ${anime.episodes}")
+                    println("Temporada: ${anime.season}")
+                    println("Géneros: ${anime.genres}")
+                    println("URL de la imagen: ${anime.image_url}")
+                }
+            }
         }
     }
     fun changeAnimeList(view: View){
