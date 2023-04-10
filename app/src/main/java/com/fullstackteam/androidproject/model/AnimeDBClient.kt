@@ -5,5 +5,5 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object AnimeDBClient {
     private val retrofit = Retrofit.Builder().baseUrl("https://fastapi-1-v7692141.deta.app/").addConverterFactory(GsonConverterFactory.create()).build()
-    val service = retrofit.create(AnimeDBService::class.java)
+    val service: AnimeDBService = retrofit.create(AnimeDBService::class.java)
 }

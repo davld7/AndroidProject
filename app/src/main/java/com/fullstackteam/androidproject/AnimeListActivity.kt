@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import com.fullstackteam.androidproject.databinding.ActivityAnimeListBinding
 import com.fullstackteam.androidproject.model.AnimeDBClient
 import kotlin.concurrent.thread
+import android.util.Log
 
 class AnimeListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnimeListBinding
@@ -18,28 +19,34 @@ class AnimeListActivity : AppCompatActivity() {
             buttonClose.text = "Cerrar"
         }
         thread{
-            loadAnimeName()
+            loadAnimeNames()
         }
     }
     fun close(view: View){
         finish()
     }
-    private fun loadAnimeName(){
-        val animeList = AnimeDBClient.service.animeList()
-        val response = animeList.execute()
-        val body = response.body()
-        val animeName = ArrayList<String>()
+    private fun loadAnimeNames(){
+        try {
+            val animeList = AnimeDBClient.service.animeList()
+            val response = animeList.execute()
+            val body = response.body()
 
-        if (response.isSuccessful && body != null){
-            for (anime in body){
-                animeName.add(anime.name)
-            }
+            if (response.isSuccessful && body != null) {
+                val animeNames = ArrayList<String>()
 
-            // Configuración del adaptador en el hilo principal
-            runOnUiThread {
-                val itemsAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, animeName)
-                binding.listViewAnimeList.adapter = itemsAdapter
+                for (anime in body) {
+                    animeNames.add(anime.name)
+                }
+
+                runOnUiThread {
+                    val itemsAdapter = ArrayAdapter(this@AnimeListActivity, android.R.layout.simple_list_item_1, animeNames)
+                    binding.listViewAnimeList.adapter = itemsAdapter
+                }
+            } else {
+                Log.e("AnimeListActivity", "La llamada a la API falló con el código de respuesta ${response.code()}")
             }
+        } catch (e: Exception) {
+            Log.e("AnimeListActivity", "La llamada a la API falló con una excepción", e)
         }
     }
 }
