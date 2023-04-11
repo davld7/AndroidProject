@@ -1,6 +1,6 @@
 package com.fullstackteam.androidproject
 
-//import android.widget.ArrayAdapter
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -16,13 +16,13 @@ class AnimeListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAnimeListBinding.inflate(layoutInflater).apply {
             setContentView(root)
-            buttonClose.text = "Cerrar"
+            buttonGoBack.text = "Regresar"
         }
         thread{
             loadAnimeList()
         }
     }
-    fun close(view: View){
+    fun goBack(view: View){
         finish()
     }
     private fun loadAnimeList(){
@@ -32,17 +32,20 @@ class AnimeListActivity : AppCompatActivity() {
             val body = response.body()
 
             if (response.isSuccessful && body != null) {
-                /*val animeNames = ArrayList<String>()
-
-                for (anime in body) {
-                    animeNames.add(anime.name)
-                }*/
-
                 runOnUiThread {
-                    //val itemsAdapter = ArrayAdapter(this@AnimeListActivity, android.R.layout.simple_list_item_1, animeNames)
-                    //binding.listViewAnimeList.adapter = itemsAdapter
                     val animeAdapter = AnimeAdapter(this, body)
                     binding.listViewAnimeList.adapter = animeAdapter
+                }
+                binding.listViewAnimeList.setOnItemClickListener { parent, view, position, id ->
+                    val intent = Intent(AnimeListActivity@this, AnimeDetailActivity::class.java).apply{
+                        putExtra("name", body[id.toInt()].name)
+                        putExtra("description", body[id.toInt()].description)
+                        putExtra("episodes", body[id.toInt()].episodes)
+                        putExtra("season", body[id.toInt()].season)
+                        putExtra("genres", body[id.toInt()].genres)
+                        putExtra("image_url", body[id.toInt()].image_url)
+                    }
+                    startActivity(intent)
                 }
             } else {
                 Log.e("AnimeListActivity", "La llamada a la API falló con el código de respuesta ${response.code()}")
