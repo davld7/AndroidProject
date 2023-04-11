@@ -20,8 +20,10 @@ class AnimeDetailActivity : AppCompatActivity() {
             val genres = intent.getStringExtra("genres")
             val image_url = intent.getStringExtra("image_url")
             textDetailName.text = name
-            textDetailDescription.text = description
-            textDetailSeason.text = season
+            textDetailDescription.text = "Descripción: $description"
+            textDetailEpisodes.text = "Episodio(s): $episodes"
+            textDetailSeason.text = "Temporada: $season"
+            textDetailGenres.text = "Género(s): $genres"
             Picasso.get().load(image_url).into(imageDetailAnime)
         }
     }

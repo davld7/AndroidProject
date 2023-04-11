@@ -39,6 +39,20 @@
                 app:srcCompat="@drawable/anime_icon" />
 
             <TextView
+                android:id="@+id/textDetailEpisodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextEpisodes"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textDetailGenres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextDetailGenres"
+                android:textAlignment="center" />
+
+            <TextView
                 android:id="@+id/textDetailDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
