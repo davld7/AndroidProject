@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
             textMainMenu.text = "Menú Principal"
+            textCreatedBy.text = "Created by Full Stack Team"
             buttonAnimeList.text = "Lista de Animes"
         }
     }
