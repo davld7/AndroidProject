@@ -14,10 +14,10 @@
         android:theme="@style/Theme.AndroidProject"
         tools:targetApi="31">
         <activity
-            android:name=".AnimeDetailActivity"
+            android:name=".AnimeListActivity"
             android:exported="false" />
         <activity
-            android:name=".AnimeListActivity"
+            android:name=".AnimeDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

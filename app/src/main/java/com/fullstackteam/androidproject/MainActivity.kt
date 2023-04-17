@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             buttonAnimeList.text = "Lista de Animes"
         }
     }
-    fun goAnimeList(view: View){
+    fun goAnimeList(view: View) {
         val intent = Intent(this, AnimeListActivity::class.java)
         startActivity(intent)
     }

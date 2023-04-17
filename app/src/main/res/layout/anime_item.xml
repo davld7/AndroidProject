@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imageAnime"
         android:layout_width="100dp"
-        android:layout_height="125dp"
+        android:layout_height="140dp"
         app:srcCompat="@drawable/anime_icon" />
 
     <LinearLayout

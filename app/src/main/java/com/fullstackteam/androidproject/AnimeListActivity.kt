@@ -4,30 +4,48 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.fullstackteam.androidproject.databinding.ActivityAnimeListBinding
-import com.fullstackteam.androidproject.model.AnimeDBClient
-import kotlin.concurrent.thread
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.fullstackteam.androidproject.databinding.ActivityAnimeListBinding
 import com.fullstackteam.androidproject.model.AnimeAdapter
+import com.fullstackteam.androidproject.model.AnimeDBClient
+import com.fullstackteam.androidproject.model.AnimeListItem
+import kotlin.concurrent.thread
 
 class AnimeListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnimeListBinding
+    private var size: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAnimeListBinding.inflate(layoutInflater).apply {
-            setContentView(root)
+            val view = root
+            setContentView(view)
             buttonGoBack.text = "Regresar"
-            buttonUpdate.text = "Actualizar"
-            loadAnimeList()
+            getAnimeList()
         }
     }
-    fun goBack(view: View){
+
+    fun goBack(view: View) {
         finish()
     }
-    fun update(view: View){
-        loadAnimeList()
+
+    fun update(view: View) {
+        getAnimeList()
     }
-    private fun loadAnimeList(){
+
+    fun getSize(view: View) {
+        if (size != 0){
+            runOnUiThread {
+                Toast.makeText(this, "$size Animes en la Base de Datos", Toast.LENGTH_SHORT).show()
+            }
+        } else{
+            runOnUiThread {
+                Toast.makeText(this, "Vuelva a actualizar la Lista de Animes", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun getAnimeList() {
         thread {
             try {
                 val animeList = AnimeDBClient.service.animeList()
@@ -36,30 +54,36 @@ class AnimeListActivity : AppCompatActivity() {
 
                 if (response.isSuccessful && animeListBody != null) {
                     runOnUiThread {
-                        val animeAdapter = AnimeAdapter(this, animeListBody)
-                        binding.listViewAnimeList.adapter = animeAdapter
-                    }
-                    binding.listViewAnimeList.setOnItemClickListener { parent, view, position, id ->
-                        val intent = Intent(this, AnimeDetailActivity::class.java).apply{
-                            putExtra("name", animeListBody[position].name)
-                            putExtra("description", animeListBody[position].description)
-                            putExtra("episodes", animeListBody[position].episodes)
-                            putExtra("season", animeListBody[position].season)
-                            putExtra("genres", animeListBody[position].genres)
-                            putExtra("image_url", animeListBody[position].image_url)
-                        }
-                        startActivity(intent)
+                        size = animeListBody.size
+                        binding.recyclerViewAnimeList.setHasFixedSize(true)
+                        val layoutManager = LinearLayoutManager(baseContext)
+                        binding.recyclerViewAnimeList.layoutManager = layoutManager
+                        binding.recyclerViewAnimeList.adapter = AnimeAdapter(animeListBody) { onItemClick(it) }
                     }
                 } else {
                     runOnUiThread {
-                        Toast.makeText(this, "La llamada a la API falló con el código de respuesta ${response.code()}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "La llamada a la API falló con el código de respuesta ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (exception: Exception) {
                 runOnUiThread {
-                    Toast.makeText(this, "La llamada a la API falló con una excepción $exception", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"La llamada a la API falló con una excepción $exception", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    private fun onItemClick(anime: AnimeListItem) {
+        val intent = Intent(this, AnimeDetailActivity::class.java).apply {
+            putExtra("name", anime.name)
+            putExtra("description", anime.description)
+            putExtra("episodes", anime.episodes)
+            putExtra("season", anime.season)
+            putExtra("genres", anime.genres)
+            putExtra("image_url", anime.image_url)
+        }
+        startActivity(intent)
     }
 }
