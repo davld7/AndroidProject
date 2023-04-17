@@ -10,6 +10,7 @@ class AnimeDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAnimeDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inflamos el layout de la actividad y asignamos los valores de las vistas correspondientes
         binding = ActivityAnimeDetailBinding.inflate(layoutInflater).apply{
             setContentView(root)
             buttonDetailGoBack.text = "Regresar"
@@ -27,6 +28,8 @@ class AnimeDetailActivity : AppCompatActivity() {
             Picasso.get().load(image_url).into(imageDetailAnime)
         }
     }
+    
+    // Método para regresar a la actividad anterior
     fun goBack(view: View){
         finish()
     }
