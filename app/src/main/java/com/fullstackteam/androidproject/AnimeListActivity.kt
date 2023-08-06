@@ -54,14 +54,18 @@ class AnimeListActivity : AppCompatActivity() {
             try {
                 // Llamada a la API para obtener la lista de animes
                 val animeList = AnimeDBClient.service.animeList()
-                val response = animeList.execute()
-                val animeListBody = response.body()
+                val responseAnimeList = animeList.execute()
+                val animeListBody = responseAnimeList.body()
+
+                val totalAnimesPages = AnimeDBClient.service.totalAnimesPages()
+                val responseTotalAnimesPages = totalAnimesPages.execute()
+                val totalAnimesPagesBody = responseTotalAnimesPages.body()
                 
                 // Verificación de si la respuesta de la API fue exitosa
-                if (response.isSuccessful && animeListBody != null) {
+                if (responseAnimeList.isSuccessful && animeListBody != null) {
                     runOnUiThread {
                         // Asignación de la cantidad de animes en la base de datos
-                        size = animeListBody.size
+                        size = totalAnimesPagesBody!!.total_animes
                         // Configuración del RecyclerView con la lista de animes obtenida
                         binding.recyclerViewAnimeList.setHasFixedSize(true)
                         val layoutManager = LinearLayoutManager(baseContext)
@@ -73,7 +77,7 @@ class AnimeListActivity : AppCompatActivity() {
                     runOnUiThread {
                         Toast.makeText(
                             this,
-                            "La llamada a la API falló con el código de respuesta ${response.code()}", Toast.LENGTH_SHORT).show()
+                            "La llamada a la API falló con el código de respuesta ${responseAnimeList.code()}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (exception: Exception) {
